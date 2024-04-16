@@ -1,0 +1,41 @@
+# ingress.yaml - This file defines the ingress controller configuration for ArgoCD
+
+apiVersion: networking.k8s.io/v1
+# This is an Ingress Route
+kind: Ingress
+metadata:
+  annotations:
+    # Ingress is for Traefik
+    spec.ingressClassName: "traefik"
+    # Use the production Let's Encrypt Issuer
+    cert-manager.io/cluster-issuer: letsencrypt-production
+    # Redirect http to https
+    traefik.ingress.kubernetes.io/redirect-entry-point: "https"
+    traefik.ingress.kubernetes.io/frontend-entry-points: http,https
+    traefik.ingress.kubernetes.io/redirect-permanent: "true"
+  labels:
+    app: argocd
+  name: argocd
+  # On the devops-tools namespace
+  namespace: devops-tools
+spec:
+  rules:
+  # Set up the domain name to serve
+  - host: <URL TO SERVE IT FROM>
+    http:
+      paths:
+      # Point to a Kubernetes service
+      - backend:
+          service:
+            # Named argocd-server
+            name: argocd-server
+            port: 
+              # Listening on port 80
+              number: 80
+        path: /
+        pathType: Prefix  
+  tls:
+  - hosts:
+    # Set up the domain name to serve
+    - <URL TO SERVE IT FROM>
+    secretName: argocd-tls

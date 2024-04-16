@@ -1,0 +1,15 @@
+# configMap.yaml - Contains configuration changes for ArgoCD
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  # Make change to the configuration parameters for the server
+  name: argocd-cmd-params-cm
+  # In the devops-tools namespace
+  namespace: devops-tools
+  labels:
+    app.kubernetes.io/name: argocd-cmd-params-cm
+    app.kubernetes.io/part-of: argocd
+data:
+  # Do not use HTTPS
+  server.insecure: "true"
