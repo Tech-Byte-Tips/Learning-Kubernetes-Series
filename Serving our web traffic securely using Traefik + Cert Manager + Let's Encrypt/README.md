@@ -63,11 +63,11 @@ This guide assumes that you have already exposed your ingress controller through
 6. Create a Cluster Certificate Issuer entry for Let's Encrypt:
 
     ```
-    kubectl apply -f "02 - Cert Manager/le-staging-issuer.yaml
+    kubectl apply -f "02 - Cert Manager/le-staging-issuer.yaml"
     ```
     or
     ```
-    kubectl apply -f "02 - Cert Manager/le-production-issuer.yaml
+    kubectl apply -f "02 - Cert Manager/le-production-issuer.yaml"
     ```
 
     Here we are defining two Certificate Issuers for Let's Encrypt.  The Staging one is for testing, as we don't want to hit their rate limit while testing.  Once you are sure that it is working properly, you can switch to the Production Issuer.
