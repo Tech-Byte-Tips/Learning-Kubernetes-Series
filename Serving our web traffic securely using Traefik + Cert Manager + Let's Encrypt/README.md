@@ -43,7 +43,7 @@ This guide assumes that you have already exposed your ingress controller through
 4. Install Cert Manager:
 
     ```
-    kubectl apply -f "Traefik-CertManager-LetsEncrypt/02 - Cert Manager/cert-manager-1.13.1.yaml"
+    kubectl apply -f "02 - Cert Manager/cert-manager-1.13.1.yaml"
     ```
     or 
     ```
@@ -63,11 +63,11 @@ This guide assumes that you have already exposed your ingress controller through
 6. Create a Cluster Certificate Issuer entry for Let's Encrypt:
 
     ```
-    kubectl apply -f "Traefik-CertManager-LetsEncrypt/02 - Cert Manager/le-staging-issuer.yaml
+    kubectl apply -f "02 - Cert Manager/le-staging-issuer.yaml
     ```
     or
     ```
-    kubectl apply -f "Traefik-CertManager-LetsEncrypt/02 - Cert Manager/le-production-issuer.yaml
+    kubectl apply -f "02 - Cert Manager/le-production-issuer.yaml
     ```
 
     Here we are defining two Certificate Issuers for Let's Encrypt.  The Staging one is for testing, as we don't want to hit their rate limit while testing.  Once you are sure that it is working properly, you can switch to the Production Issuer.
@@ -95,7 +95,7 @@ This guide assumes that you have already exposed your ingress controller through
 9. For testing, we will deploy a default nginx image:
 
     ```
-    kubectl create deployment nginx --image nginx:alpine
+    kubectl apply -f "03 - App/deployment.yaml"
     ```
 
 10. Check the status of the deployment:
@@ -111,7 +111,7 @@ This guide assumes that you have already exposed your ingress controller through
 11. Expose it through port 80:
 
     ```
-    kubectl expose deployment nginx --port 80 --target-port 80
+    kubectl apply -f "03 - App/service.yaml"
     ```
 
 12. Check that the service is running:
@@ -122,39 +122,8 @@ This guide assumes that you have already exposed your ingress controller through
 
 13. Create an ingress traefik controller:
 
-```
-# ingress ingress-nginx.yaml
-
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  annotations:
-    cert-manager.io/cluster-issuer: letsencrypt-production
-    kubernetes.io/ingress.class: traefik
-  labels:
-    app: nginx
-  name: nginx
-  namespace: default
-spec:
-  rules:
-  - host: example.com # Change by your domain
-    http:
-      paths:
-      - backend:
-          service:
-            name: nginx
-            port: 
-              number: 80
-        path: /
-        pathType: Prefix  
-  tls:
-  - hosts:
-    - example.com # Change by your domain
-    secretName: example-com-tls
-```
-
     ```
-    kubectl apply -f ingress-nginx.yaml
+    kubectl apply -f "03 - App/ingress.yaml"
     ```
 
 14. Test that it works by navigating to the website in your browser.
