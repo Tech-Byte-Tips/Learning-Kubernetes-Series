@@ -26,7 +26,7 @@ This guide assumes that you have already exposed your ingress controller through
 
 # Steps
 
-1. Clone this repository
+1. Clone this repository and change directory to it
 
     ```
     git clone https://github.com/Tech-Byte-Tips/Learning-Kubernetes-Series/
@@ -37,7 +37,7 @@ This guide assumes that you have already exposed your ingress controller through
 3. By default, k3s comes with Traefik pre-configured as its ingress controller.  If you are using a different version of Kubernetes, you might need to install it:
 
     ```
-    kubectl apply -f Traefik-CertManager-LetsEncrypt/01 - Traefik
+    kubectl apply -f "01 - Traefik"
     ```
 
 4. Install Cert Manager:
