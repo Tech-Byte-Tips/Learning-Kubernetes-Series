@@ -1,0 +1,37 @@
+# ingress.yaml - Ingress for the nginx application
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    # Use the Production Let's Encrypt Issuer
+    cert-manager.io/cluster-issuer: letsencrypt-production
+    # This ingress is for Traefik
+    spec.ingressClassName: traefik
+    # Redirect all traffic to HTTPS, always
+    traefik.ingress.kubernetes.io/frontend-entry-points: http,https
+    traefik.ingress.kubernetes.io/redirect-entry-point: https
+    traefik.ingress.kubernetes.io/redirect-permanent: "true"
+  labels:
+    app: nginx
+  name: nginx
+  # Deploy to default namespace
+  namespace: default
+spec:
+  rules:
+  # Change to your domain
+  - host: <URL TO SERVE GOES HERE>
+    http:
+      paths:
+      - backend:
+          service:
+            name: nginx
+            port: 
+              number: 80
+        path: /
+        pathType: Prefix  
+  tls:
+  - hosts:
+    # Change to your domain
+    - <URL TO SERVE GOES HERE>
+    secretName: nginx-tls

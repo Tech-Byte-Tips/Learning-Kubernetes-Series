@@ -1,0 +1,26 @@
+# deployment.yaml - Defines the deployment of the basic alpine based nginx container.
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  # Name the deployment nginx
+  name: nginx
+  # Put on the default namespace
+  namespace: default
+spec:
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+        - name: nginx
+          # Use the nginx:alpine image
+          image: nginx:alpine
+          # Listen on port 80
+          ports:
+            - name: web
+              containerPort: 80

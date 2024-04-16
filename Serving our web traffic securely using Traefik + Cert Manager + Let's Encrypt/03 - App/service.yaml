@@ -1,0 +1,17 @@
+# service.yaml - Expose the nginx application to the cluster
+
+apiVersion: v1
+kind: Service
+metadata:
+  # Service is named nginx
+  name: nginx
+  # Deploy to default namespace
+  namespace: default
+spec:
+  selector:
+    app: nginx
+  ports:
+    # Expose port 80 and redirect to container's port 80
+    - name: http
+      port: 80
+      targetPort: 80

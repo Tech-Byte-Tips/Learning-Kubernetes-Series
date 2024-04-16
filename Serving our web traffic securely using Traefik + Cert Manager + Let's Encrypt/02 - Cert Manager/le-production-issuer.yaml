@@ -1,0 +1,22 @@
+# Certificate Issues using Let's Encrypt's Production servers
+
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  # The name of this Certificate Issuer in the cluster
+  name: letsencrypt-production
+  # Put it in the same namespace as Cert Manager
+  namespace: cert-manager
+spec:
+  acme:
+    # The production servers for Let's Encrypt
+    server: https://acme-v02.api.letsencrypt.org/directory
+    email: <YOUR E-MAIL>
+    privateKeySecretRef:
+      name: letsencrypt-production
+    solvers:
+    - selector: {}
+      http01:
+        ingress:
+          # For use with the Traefik Ingress Controller
+          class: traefik
