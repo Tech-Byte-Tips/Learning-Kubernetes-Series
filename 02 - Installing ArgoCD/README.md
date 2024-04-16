@@ -31,6 +31,10 @@ It allows us to do GitOps (Git Operations).  This means that the operations of o
   ```
   kubectl apply -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml -n devops-tools
   ```
+  or
+  ```
+  kubectl apply -f install.yaml -n devops-tools
+  ```
 
 3. Get the ArgoCD password:
 
