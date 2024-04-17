@@ -16,8 +16,8 @@ metadata:
   labels:
     app: argocd
   name: argocd
-  # On the devops-tools namespace
-  namespace: devops-tools
+  # On the argocd namespace
+  namespace: argocd
 spec:
   rules:
   # Set up the domain name to serve

@@ -20,39 +20,43 @@ It allows us to do GitOps (Git Operations).  This means that the operations of o
 
 # Steps
 
-1. Create the DevOps-Tools namespace (if not exists):
+1. Create the ArgoCD namespace (if not exists):
 
   ```
-  kubectl create namespace devops-tools
+  kubectl create namespace argocd
   ```
+
+  We need to deploy ArgoCD to its own namespace because all of the Custom Resource Definitions in the installation file refer to this namespace.  If we were to try another namespace, it would fail horribly at doing its job because things that it will need will not be available where it expects them to be.
 
 2. Install ArgoCD in the Kubernetes cluster:
 
   ```
-  kubectl apply -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml -n devops-tools
+  kubectl apply -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml -n argocd
   ```
   or
   ```
-  kubectl apply -f install.yaml -n devops-tools
+  kubectl apply -f install.yaml -n argocd
   ```
 
 3. Get the ArgoCD password:
 
-Linux:
+  Linux:
 
   ```
-  kubectl -n devops-tools get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
+  kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
   ```
 
-Windows:
+  Windows:
 
   ```
-  $output = kubectl -n devops-tools get secret argocd-initial-admin-secret -o jsonpath="{.data.password}"
+  $output = kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}"
 
   [System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String($output))
   ```
 
 4. Expose Argo CD with an ingress and certificate:
+
+  (No need to specify namespace because it is in the files.)
 
   ```
   kubectl apply -f ingress.yaml
@@ -61,21 +65,21 @@ Windows:
 
   We are applying 2 things:
 
-  a. In here, we are creating an ingress for Traefik pointing to the ArgoCD pod using port 80.
+  a. We are creating an ingress for Traefik pointing to the ArgoCD pod using port 80.
 
   b. In order to connect using port 80 (terminate the SSL connection by Traefik), we need to make a configuration change to ArgoCD to use HTTP (insecure connections).
 
 5. Log into ArgoCD:
 
   username: admin
-  password: from the step number 3
+  password: from step 3
 
   NOTE: 
 
   If you can't see the user interface and get an error related to redirects, you need to restart the ArgoCD server:
 
   ```
-  kubectl rollout restart deployment argocd-server -n devops-tools
+  kubectl rollout restart deployment argocd-server -n argocd
   ```
 
 6. Click on Applications and start creating applications.
