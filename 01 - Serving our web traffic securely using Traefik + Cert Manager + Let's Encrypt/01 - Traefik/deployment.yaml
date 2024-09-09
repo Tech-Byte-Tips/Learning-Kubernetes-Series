@@ -94,6 +94,7 @@ spec:
           - "--entrypoints.metrics.address=:9100/tcp"
           - "--entrypoints.traefik.address=:9000/tcp"
           - "--entrypoints.web.address=:80/tcp"
+          - "--entrypoints.web.http.redirections.entryPoint.to=websecure"
           - "--entrypoints.websecure.address=:443/tcp"
           - "--api.dashboard=true"
           - "--ping=true"
