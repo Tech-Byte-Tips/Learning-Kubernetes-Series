@@ -69,6 +69,8 @@ It allows us to do GitOps (Git Operations).  This means that the operations of o
 
   b. In order to connect using port 80 (terminate the SSL connection by Traefik), we need to make a configuration change to ArgoCD to use HTTP (insecure connections).
 
+  NOTE: If we expose ArgoCD, the previous pod will likely not be running in insecure mode (like we specified in the Config Map).  We need to kill the old pod so that kubernetes spins up a new pod with the proper configuration.  If you don't do this, you will see a "Too Many Redirects" error.
+
 5. Log into ArgoCD:
 
   username: admin
